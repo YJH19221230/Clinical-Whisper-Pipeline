@@ -271,6 +271,8 @@ class PIIScrubber:
     def summary(self) -> dict:
         """Counts for the analysis output. Never includes the identifiers."""
         return {
+            "model": self.model_name,
+            "confidence_threshold": self.confidence_threshold,
             "masked_mentions": self.entity_count,
             "masked_by_type": dict(sorted(self.entity_types.items())),
             "distinct_identifiers": len(set((lab, n) for (lab, _), n in self._ids.items())),
