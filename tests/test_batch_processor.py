@@ -13,12 +13,10 @@ def test_extract_row_surfaces_llm_failure(tmp_path):
         "llm_scoring_status": "failed",
         "llm_scoring_coverage": 0.0,
         "llm_clinical_scoring": {
-            "hesitancy_score": 0,
-            "affect_flatness": 0,
-            "engagement_level": 5,
-            "elaboration_positive": 5,
-            "elaboration_negative": 5,
-            "psychomotor_indicators": 0,
+            "anhedonia_content": None,
+            "depressed_mood_content": None,
+            "affect_flatness": None,
+            "engagement_level": None,
             "_meta": {"error": "model unavailable"},
         },
     }
@@ -27,7 +25,7 @@ def test_extract_row_surfaces_llm_failure(tmp_path):
 
     row = _extract_row(str(path), "interview.mp3")
 
-    assert row["analysis_status"] == "completed_with_warnings"
+    assert row["status"] == "completed_with_warnings"
     assert row["llm_scoring_status"] == "failed"
     assert row["llm_scoring_coverage"] == 0.0
     assert "model unavailable" in row["warnings"]
@@ -37,8 +35,8 @@ def test_extract_row_classifies_legacy_partial_result(tmp_path):
     analysis = {
         "status": "completed",
         "llm_clinical_scoring": {
-            "hesitancy_score": 4,
-            "_meta": {"errors": ["one window failed"], "coverage": 0.5},
+            "anhedonia_content": 2,
+            "_meta": {"runs_failed": 1, "coverage": 0.5},
         },
     }
     path = tmp_path / "legacy_analysis.json"
