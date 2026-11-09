@@ -144,16 +144,10 @@ cd Clinical-Whisper-Pipeline
 uv venv
 ```
 
-macOS / Linux 激活环境：
+在 macOS 上激活环境：
 
 ```bash
 source .venv/bin/activate
-```
-
-Windows PowerShell 激活环境：
-
-```powershell
-.\.venv\Scripts\Activate.ps1
 ```
 
 安装项目和 MOSS 可选依赖：
