@@ -118,7 +118,7 @@ percentiles from a real corpus before being reported.
 |---|---|
 | **Hardware** | Apple Silicon Mac (M1 or newer) for the MLX path. Check with `uname -m` — it must print `arm64`. Intel Macs, Windows, and Linux fall back to HuggingFace transformers on CUDA or CPU, which is substantially slower. |
 | **ffmpeg** | Not required. Audio is decoded through PyAV, which ships its own ffmpeg libraries. |
-| **Disk / network** | The DMG is self-contained: model weights are inside the app, so nothing downloads and no Hugging Face account is needed. Running **from source** instead pulls ~6.4 GB into `~/.cache` on first use. |
+| **Disk / network** | The base DMG contains the transcription and masking models. Clinical scoring is a separate ~5 GB Scoring add-on. Running **from source** downloads the configured models into the local cache on first use. |
 
 ---
 
@@ -138,18 +138,23 @@ Drop an audio file into the window and press Process. Stage-by-stage progress
 appears in the console panel, results render in the window, and **Save CSV…**
 writes the summary wherever you choose.
 
+The base app transcribes and masks English interviews. Experimental clinical
+scores require the separate **ClinicalWhisper Scoring** add-on. Language masking,
+name silencing, Praat, and Kintsugi features are also distributed as optional
+add-ons; install them with **Install an add-on…** at the bottom of the app.
+
 The packaged app writes files to `~/ClinicalWhisper/`, outside Documents so that
 common iCloud Documents settings do not automatically sync study data:
 
 ```
 ~/ClinicalWhisper/
-├── Input/        # uploaded audio
-├── Output/       # <name>_analysis.json and <name>_summary.csv
-└── Processed/    # archived audio after a successful run
+├── Output/       # <name>_analysis.json, summary CSVs, and optional exports
+└── config.yaml   # optional user configuration
 ```
 
-Override that location with `CLINICALWHISPER_DATA_DIR`. To customise the
-pipeline, copy `config.example.yaml` to
+The desktop app reads selected recordings in place; it does not move or copy the
+source audio. Override the data location with `CLINICALWHISPER_DATA_DIR`. To
+customise the pipeline, copy `config.example.yaml` to
 `~/ClinicalWhisper/config.yaml` — the app prefers it over the bundled
 defaults.
 
